@@ -57,7 +57,11 @@ class LovelyCat
     /**
      * @var string 机器猫接口地址
      */
-    public $url = "http://127.0.0.1:8073/send";
+    public $baseUri = "http://127.0.0.1:8073/";
+    /**
+     * @var mixed|string
+     */
+    public $sRequUrl = "send";
 
     /**
      * @var array
@@ -67,29 +71,31 @@ class LovelyCat
     public function __construct($config = null)
     {
         if (!empty($config)) {//未配置，使用默认配置
-            $this->url = $config['url'];
+            $this->baseUri = $config['baseUri'];
+            $this->sRequUrl = $config['sRequUrl'];
             $this->config = $config;
         }
-        $this->parseWechat($_POST);
     }
 
     /**
      * 解析可爱猫回调消息
      * @param $data
      */
-    public function parseWechat($data)
+    public function parseWechat()
     {
-        $this->type = $data['type'];
-        $this->from_wxid = $data['from_wxid'];
-        $this->from_name = urldecode($data['from_name']);
-        $this->final_from_wxid = $data['final_from_wxid'];
-        $this->final_from_name = urldecode($data['final_from_name']);
-        $this->robot_wxid = $data['robot_wxid'];
-        $this->msg = urldecode($data['msg']);
-        $this->msg_type = intval($data['msg_type']);
-        $this->file_url = $data['file_url'];
-        $this->msg = urldecode($data['msg']);
-        $this->time = $data['time'];
+        $data = $_POST;
+        $responseData['type'] = $this->type = $data['type'] ?? '';
+        $responseData['from_wxid'] = $this->from_wxid = $data['from_wxid'] ?? '';
+        $responseData['from_name'] = $this->from_name = urldecode($data['from_name'] ?? '');
+        $responseData['final_from_wxid'] = $this->final_from_wxid = $data['final_from_wxid']  ?? '';
+        $responseData['final_from_name'] = $this->final_from_name = urldecode($data['final_from_name']  ?? '');
+        $responseData['robot_wxid'] = $this->robot_wxid = $data['robot_wxid']  ?? '';
+        $responseData['msg'] = $this->msg = urldecode($data['msg'] ?? '');
+        $responseData['msg_type'] = $this->msg_type = intval($data['msg_type'] ?? '');
+        $responseData['file_url'] = $this->file_url = $data['file_url'] ?? '';
+        $responseData['msg'] = $this->msg = urldecode($data['msg'] ?? '');
+        $responseData['time'] = $this->time = $data['time']  ?? '';
+        return $responseData;
     }
 
 
@@ -104,14 +110,13 @@ class LovelyCat
      */
     public function sendTextMsg($msg, $robwxid = null, $to_wxid = null)
     {
-
         $data = array();
         $data['type'] = 100;
         $data['msg'] = urlencode($msg); // 发送内容
         $data['to_wxid'] = $to_wxid ?: $this->from_wxid;     // 对方id
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;  // 账户id，用哪个账号去发送这条消息
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -136,7 +141,7 @@ class LovelyCat
         $data['at_name'] = $at_name;
         $data['robot_wxid'] = $robwxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -158,7 +163,7 @@ class LovelyCat
         $data['to_wxid'] = $to_wxid ?: $this->from_wxid;
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -180,7 +185,7 @@ class LovelyCat
         $data['to_wxid'] = $to_wxid ?: $this->from_wxid;
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -202,7 +207,7 @@ class LovelyCat
         $data['to_wxid'] = $to_wxid ?: $this->from_wxid;     // 对方id（默认发送至来源的id，也可以发给其他人）
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;  // 账户id，用哪个账号去发送这条消息
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -224,7 +229,7 @@ class LovelyCat
         $data['to_wxid'] = $to_wxid ?: $this->from_wxid;     // 对方id（默认发送至来源的id，也可以发给其他人）
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;  // 账户id，用哪个账号去发送这条消息
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -257,7 +262,7 @@ class LovelyCat
         $data['to_wxid'] = $to_wxid ?: $this->from_wxid;
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -278,7 +283,7 @@ class LovelyCat
         $data['to_wxid'] = $to_wxid ?: $this->from_wxid;
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -296,7 +301,7 @@ class LovelyCat
         $data['type'] = 201;
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -314,7 +319,7 @@ class LovelyCat
         $data['type'] = 202;
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;  // 账户id
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -330,7 +335,7 @@ class LovelyCat
         $data = array();
         $data['type'] = 203;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -350,7 +355,7 @@ class LovelyCat
         $data['robot_wxid'] = $robwxid;     // 账户id（可选，如果填空字符串，即取所有登录账号的好友列表，反正取指定账号的列表）
         $data['is_refresh'] = $is_refresh;  // 是否刷新列表，0 从缓存获取 / 1 刷新并获取
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -370,7 +375,7 @@ class LovelyCat
         $data['robot_wxid'] = $robwxid;     // 账户id（可选，如果填空字符串，即取所有登录账号的好友列表，反正取指定账号的列表）
         $data['is_refresh'] = $is_refresh;  // 是否刷新列表，0 从缓存获取 / 1 刷新并获取
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -392,7 +397,7 @@ class LovelyCat
         $data['group_wxid'] = $group_wxid;  // 群id
         $data['is_refresh'] = $is_refresh;  // 是否刷新列表，0 从缓存获取 / 1 刷新并获取
         $response = array('data' => json_encode($data));
-        $result = $this->sendRequest($response, 'post');
+        $result = $this->sendRequest($response, 'POST');
         return json_decode($result, true);
     }
 
@@ -415,7 +420,7 @@ class LovelyCat
         $data['group_wxid'] = $group_wxid;    // 群id
         $data['member_wxid'] = $member_wxid;  // 群成员id
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -437,7 +442,7 @@ class LovelyCat
         $data['friend_wxid'] = $friend_wxid ?: $this->from_wxid;  // 朋友id
         $data['msg'] = $json_string ?: $this->msg;         // 转账事件原消息
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -457,7 +462,7 @@ class LovelyCat
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;      // 账户id
         $data['msg'] = $json_string ?: $this->msg;         // 同步消息事件中群聊邀请原消息
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -477,7 +482,7 @@ class LovelyCat
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;      // 账户id
         $data['msg'] = $json_string ?: $this->msg;         // 好友请求事件中原消息
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
     /**
@@ -498,7 +503,7 @@ class LovelyCat
         $data['friend_wxid'] = $friend_wxid;
         $data['note'] = $note;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -518,7 +523,7 @@ class LovelyCat
         $data['robot_wxid'] = $robwxid;
         $data['friend_wxid'] = $friend_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -540,7 +545,7 @@ class LovelyCat
         $data['group_wxid'] = $group_wxid ?: $this->from_wxid;
         $data['member_wxid'] = $member_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -561,7 +566,7 @@ class LovelyCat
         $data['group_wxid'] = $group_wxid;  // 群id
         $data['group_name'] = $group_name;   // 新群名
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
     /**
@@ -582,7 +587,7 @@ class LovelyCat
         $data['group_wxid'] = $group_wxid;  // 群id
         $data['notice'] = $notice;       // 新公告
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -601,7 +606,7 @@ class LovelyCat
         $data['robot_wxid'] = $robwxid;  // 账户id
         $data['friends'] = $friends;  // 好友id数组
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
@@ -620,7 +625,7 @@ class LovelyCat
         $data['robot_wxid'] = $robwxid;    // 账户id
         $data['group_wxid'] = $group_wxid; // 群id
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
     /**
@@ -640,21 +645,21 @@ class LovelyCat
         $data['group_wxid'] = $group_wxid;
         $data['friend_wxid'] = $friend_wxid;
         $response = array('data' => json_encode($data));
-        return $this->sendRequest($response, 'post');
+        return $this->sendRequest($response, 'POST');
     }
 
 
     /**
-     *@param mixed $params 表单参数
+     * @param mixed $params 表单参数
      * @param int $timeout 超时时间
      * @param string $method 请求方法 POST / GET
-     * @return array|string
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return mixed|string
+     * @throws HttpException
      */
-    public function sendRequest($params, $method = 'get', $timeout = 3)
+    public function sendRequest($params, $method = 'GET', $timeout = 3)
     {
         try {
-            $res = (new GuzzleHttp())->sendRequest($this->url, $method, null, $params, $timeout);
+            $res = (new GuzzleHttp())->sendRequest($this->baseUri, $method, $this->sRequUrl, $params, $timeout);
             $data = json_decode($res['data'], true);
             if ($data) {
                 $res = $data;

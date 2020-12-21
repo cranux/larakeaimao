@@ -6,10 +6,41 @@
 ## Installing
 
 ```shell
-$ composer require cranux/larakeaimao -vvv
+$ composer require cranux/larakeaimao
 ```
 
 ## Usage
+
+#### **代码示例**
+
+1. **接收消息回掉**
+
+   ```php
+   /接收消息回掉
+   $lovelyCat = Factory::LovelyCat([
+       'baseUri'=>'https://wm.pyvue.com/',
+       'sRequUrl'=>'api/send',
+   ]);
+   // 解析本次消息 并将消息复制给类属性
+   $parseWechat = $lovelyCat->parseWechat();
+   // 回复本次消息
+   return $lovelyCat->sendTextMsg('111');
+   ```
+
+2. #### 主动发送消息 
+
+   ```php
+   $lovelyCat = Factory::LovelyCat([
+               'baseUri'=>'https://wm.pyvue.com/',
+               'sRequUrl'=>'api/send',
+           ]);
+   // 两种设置参数的方法
+   // 第一如下
+   $lovelyCat->from_wxid = '11232434';
+   $lovelyCat->robot_wxid = 'wxaa11';
+   // 或者 在方法中直接传入
+   return $lovelyCat->sendTextMsg('111','wxaa11','11232434');
+   ```
 
 **接口列表：**
 
