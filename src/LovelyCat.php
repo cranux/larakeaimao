@@ -656,7 +656,7 @@ class LovelyCat
      * @return mixed|string
      * @throws HttpException
      */
-    public function sendRequest($params, $method = 'GET', $timeout = 3)
+    public function sendRequest($params, $method = 'GET', $timeout = 10)
     {
         try {
             $res = (new GuzzleHttp())->sendRequest($this->baseUri, $method, $this->sRequUrl, $params, $timeout);
