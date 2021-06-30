@@ -314,7 +314,6 @@ class LovelyCat
      */
     public function getRobotHeadImageUrl($robwxid = null)
     {
-
         $data = array();
         $data['type'] = 202;
         $data['robot_wxid'] = $robwxid ?: $this->robot_wxid;  // 账户id
@@ -397,8 +396,7 @@ class LovelyCat
         $data['group_wxid'] = $group_wxid;  // 群id
         $data['is_refresh'] = $is_refresh;  // 是否刷新列表，0 从缓存获取 / 1 刷新并获取
         $response = array('data' => json_encode($data));
-        $result = $this->sendRequest($response, 'POST');
-        return json_decode($result, true);
+        return $this->sendRequest($response, 'POST');
     }
 
 
