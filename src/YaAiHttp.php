@@ -592,11 +592,13 @@ class YaAiHttp
     {
         try {
             $res = (new GuzzleHttp())->sendRequest($this->baseUri, $method, $this->sRequUrl, $params, $timeout);
-            $data = json_decode($res['data'], true);
-            if ($data) {
-                $res = $data;
-            } else {
-                $res = urldecode($res['data']);
+            if (!empty($res)) {
+                $data = json_decode($res['data'], true);
+                if ($data) {
+                    $res = $data;
+                } else {
+                    $res = urldecode($res['data']);
+                }
             }
             return $res;
         }catch (\Exception $e){
