@@ -8,6 +8,7 @@ namespace Cranux\Larakeaimao;
  * @package Cranux\Larakeaimao
  * @method static \Cranux\Larakeaimao\LovelyCat LovelyCat(array $config)
  * @method static \Cranux\Larakeaimao\YaAiHttp YaAiHttp(array $config)
+ * @method static \Cranux\Larakeaimao\IHttp IHttp(array $config)
  */
 class Factory
 {
