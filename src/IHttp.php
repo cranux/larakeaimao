@@ -80,9 +80,8 @@ class IHttp
      * 解析回调消息
      * @return array
      */
-    public function parseWechat()
+    public function parseWechat($data)
     {
-        $data = $_POST;
         $responseData['event'] = $this->event = $data['event'] ?? '';
         $responseData['robot_wxid'] = $this->robot_wxid = $data['robot_wxid'] ?? '';
         $responseData['robot_name'] = $this->robot_name = $data['robot_name'] ?? '';
