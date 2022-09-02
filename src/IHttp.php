@@ -94,6 +94,7 @@ class IHttp
         $responseData['to_wxid'] = $this->to_wxid = $data['to_wxid'] ?? '';
         $responseData['money'] = $this->money = $data['money'] ?? '';
         $responseData['msg'] = $this->msg = $data['msg'] ?? ($data['content']??'');
+        return $responseData;
     }
 
     /**
