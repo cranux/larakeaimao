@@ -147,13 +147,13 @@ class IHttp
      * @param $member_name
      * @return false|string
      */
-    public function sendMsg($event='SendTextMsg',$msg,$group_wxid = '',$member_wxid = '',$member_name = '')
+    public function sendMsg($event='SendTextMsg',$msg,$robwxid='',$group_wxid = '',$member_wxid = '',$member_name = '')
     {
         $data = [
             'success' => true,
             "message" => "successful!",
             "event" => $event,
-            "robot_wxid" => $this->robot_wxid,
+            "robot_wxid" => $robwxid ?: $this->robot_wxid,
             "to_wxid" => $this->from_wxid ?: $this->final_from_wxid,
             "member_wxid" => $member_name,
             "member_name" => $member_wxid,
@@ -174,11 +174,11 @@ class IHttp
      * @return mixed|string
      * @throws HttpException
      */
-    public function AsyncSendMsg($event,$msg,$group_wxid = '',$member_wxid = '',$member_name = '')
+    public function AsyncSendMsg($event,$msg,$robwxid = '',$group_wxid = '',$member_wxid = '',$member_name = '')
     {
         $data = [
             "event" => "SendMusicMsg",
-            "robot_wxid" => $this->robot_wxid,
+            "robot_wxid" => $robwxid ?: $this->robot_wxid,
             "to_wxid" => $this->from_wxid ?: $this->final_from_wxid,
             "member_wxid" => $member_name,
             "member_name" => $member_wxid,
