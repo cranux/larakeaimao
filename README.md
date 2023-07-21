@@ -95,7 +95,7 @@ $ composer require cranux/larakeaimao
 退出群聊                  quit_group()
 
 邀请加入群聊              invite_in_group()
-
+邀请测试      
 
 ## License
 
